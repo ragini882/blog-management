@@ -54,6 +54,9 @@
 
                             </tbody>
                         </table>
+                        <div id="pagination">
+                            {{ $blogs->links() }}
+                        </div>
 
                         <div class="modal fade" id="linkEditorModal" aria-hidden="true">
                             <div class="modal-dialog">

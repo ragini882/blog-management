@@ -90,9 +90,9 @@ class AuthController extends Controller
             //return view('dashboard');
             $user = auth()->user();
             if ($user->hasRole('Admin')) {
-                $blogs = Blog::all();
+                $blogs = Blog::paginate(5);
             } else {
-                $blogs = Blog::where('user_id', $user->id)->get();
+                $blogs = Blog::where('user_id', $user->id)->paginate(5);
             }
 
             return view('dashboard')->with('blogs', $blogs);
