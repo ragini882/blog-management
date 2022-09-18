@@ -14,10 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('blogs', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->string('blog_name');
             $table->string('description');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

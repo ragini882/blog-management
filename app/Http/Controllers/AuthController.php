@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Session;
+use Illuminate\Support\Facades\Session;
 use App\Models\User;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\Blog;
@@ -16,7 +16,7 @@ class AuthController extends Controller
 {
     function __construct()
     {
-         $this->middleware('permission:blog-delete', ['only' => ['destroy']]);
+        $this->middleware('permission:blog-delete', ['only' => ['destroy']]);
     }
     /**
      * Write code on Method
@@ -144,16 +144,22 @@ class AuthController extends Controller
 
     public function blogUpdate(Request $request, $id)
     {
+        $user = auth()->user();
         $link = Blog::find($id);
         $link->blog_name = $request->blog_name;
         $link->description = $request->description;
         $link->save();
+        $link['can_edit'] = $user->can('blog-edit');
+        $link['can_delete'] = $user->can('blog-delete');
         return response()->json($link);
     }
 
     public function blogcreate(Request $request)
     {
+        $user = auth()->user();
         $link = Blog::create($request->all());
+        $link['can_edit'] = $user->can('blog-edit');
+        $link['can_delete'] = $user->can('blog-delete');
         return response()->json($link);
     }
 }

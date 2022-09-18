@@ -40,7 +40,7 @@
                                     <td>{{$blog->blog_name}}</td>
                                     <td>{{$blog->description}}</td>
                                     <td>
-                                        @can('blog-update')
+                                        @can('blog-edit')
                                         <button class="btn btn-info open-modal" value="{{$blog->id}}">Edit
                                         </button>
                                         @endcan

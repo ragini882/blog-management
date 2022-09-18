@@ -48,8 +48,14 @@ jQuery(document).ready(function ($) {
             dataType: 'json',
             success: function (data) {
                 var link = '<tr id="blog' + data.id + '"><td>' + data.id + '</td><td>' + data.blog_name + '</td><td>' + data.description + '</td>';
-                link += '<td><button class="btn btn-info open-modal" value="' + data.id + '">Edit</button>';
-                link += '<button class="btn btn-danger delete-blog" value="' + data.id + '">Delete</button></td ></tr > ';
+                link += '<td>';
+                if (data.can_edit) {
+                    link += '<button class="btn btn-info open-modal" value="' + data.id + '">Edit</button>';
+                }
+                if (data.can_delete) {
+                    link += ' <button class="btn btn-danger delete-blog" value="' + data.id + '">Delete</button>';
+                }
+                link += '</td ></tr > ';
                 if (state == "add") {
                     jQuery('#blogs-list').append(link);
                 } else {
