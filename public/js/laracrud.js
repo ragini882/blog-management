@@ -15,8 +15,26 @@ jQuery(document).ready(function ($) {
             $('#user_id').val(data.user_id);
             jQuery('#blog_name').val(data.blog_name);
             jQuery('#description').val(data.description);
+            jQuery('#blog_date').val(data.blog_date);
             jQuery('#btn-save').val("update");
             jQuery('#linkEditorModal').modal('show');
+        })
+    });
+
+    $(document).on('click', '#pagination a', function (e) {
+        e.preventDefault();
+        var page = $(this).attr('href').split('page=');
+        var search = $('#search').val();
+        $.get("/dashboard?page=" + page[1] + "&search=" + search, function (data) {
+            $('#table_data').html(data);
+        })
+    });
+
+    $('#search').keyup(function (e) {
+        e.preventDefault();
+        var search = $(this).val();
+        $.get("/dashboard?search=" + search, function (data) {
+            $('#table_data').html(data);
         })
     });
 
@@ -31,6 +49,8 @@ jQuery(document).ready(function ($) {
         var formData = {
             blog_name: jQuery('#blog_name').val(),
             description: jQuery('#description').val(),
+            blog_date: $('#blog_date').val(),
+            blog_image: $('#blog_image').attr('files'),
             user_id: $('#user_id').val(),
         };
         var state = jQuery('#btn-save').val();
@@ -47,7 +67,7 @@ jQuery(document).ready(function ($) {
             data: formData,
             dataType: 'json',
             success: function (data) {
-                var link = '<tr id="blog' + data.id + '"><td>' + data.id + '</td><td>' + data.blog_name + '</td><td>' + data.description + '</td>';
+                var link = '<tr id="blog' + data.id + '"><td>' + data.id + '</td><td>' + data.blog_name + '</td><td>' + data.description + '</td><td>' + data.blog_date + '</td>';
                 link += '<td>';
                 if (data.can_edit) {
                     link += '<button class="btn btn-info open-modal" value="' + data.id + '">Edit</button>';

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\Blog;
+use Illuminate\Support\File;
 
 class AuthController extends Controller
 {
@@ -84,21 +85,27 @@ class AuthController extends Controller
      *
      * @return response()
      */
-    public function dashboard()
+    public function dashboard(Request $request)
     {
         if (Auth::check()) {
             //return view('dashboard');
             $user = auth()->user();
-            if ($user->hasRole('Admin')) {
-                $blogs = Blog::paginate(5);
+            if ($request->ajax()) {
+                if ($user->hasRole('Admin')) {
+                    $blogs = Blog::where('blog_name', 'like', '%' . $request->search . '%')->orWhere('description', 'like', '%' . $request->search . '%')->paginate(5);
+                } else {
+                    $blogs = Blog::where('user_id', $user->id)->paginate(5);
+                }
+                return view('blog_table', compact('blogs'))->render();
             } else {
-                $blogs = Blog::where('user_id', $user->id)->paginate(5);
+                if ($user->hasRole('Admin')) {
+                    $blogs = Blog::paginate(5);
+                } else {
+                    $blogs = Blog::where('user_id', $user->id)->paginate(5);
+                }
+                return view('dashboard', ['blogs' => $blogs]);
             }
-
-            return view('dashboard')->with('blogs', $blogs);
         }
-
-
 
         return redirect("login")->withSuccess('Opps! You do not have access');
     }
@@ -148,6 +155,7 @@ class AuthController extends Controller
         $link = Blog::find($id);
         $link->blog_name = $request->blog_name;
         $link->description = $request->description;
+        $link->blog_date = $request->blog_date;
         $link->save();
         $link['can_edit'] = $user->can('blog-edit');
         $link['can_delete'] = $user->can('blog-delete');
@@ -156,6 +164,7 @@ class AuthController extends Controller
 
     public function blogcreate(Request $request)
     {
+
         $user = auth()->user();
         $link = Blog::create($request->all());
         $link['can_edit'] = $user->can('blog-edit');
