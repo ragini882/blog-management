@@ -5,6 +5,7 @@
             <th>Blog Name</th>
             <th>Description</th>
             <th>Date</th>
+            <th>image</th>
             <th>Edit or Delete</th>
         </tr>
     </thead>
@@ -15,6 +16,7 @@
             <td>{{$blog->blog_name}}</td>
             <td>{{$blog->description}}</td>
             <td>{{$blog->blog_date}}</td>
+            <td><img src="{{$blog->image}}" /></td>
             <td>
                 @can('blog-edit')
                 <button class="btn btn-info open-modal" value="{{$blog->id}}">Edit

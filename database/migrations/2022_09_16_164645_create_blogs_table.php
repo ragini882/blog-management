@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('blog_name');
             $table->text('description');
             $table->date('blog_date');
+            $table->string('image');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users');
         });

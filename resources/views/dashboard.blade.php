@@ -38,8 +38,9 @@
                                     <div class="modal-header">
                                         <h4 class="modal-title" id="linkEditorModalLabel">Link Editor</h4>
                                     </div>
-                                    <div class="modal-body">
-                                        <form id="modalFormData" name="modalFormData" class="form-horizontal" novalidate="" enctype="multipart/form-data">
+                                    <form id="modalFormData" name="modalFormData" class="form-horizontal" novalidate="" enctype="multipart/form-data">
+
+                                        <div class="modal-body">
                                             @csrf
                                             <div class="form-group">
                                                 <label for="inputLink" class="col-sm-2 control-label">Blog</label>
@@ -63,17 +64,19 @@
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label">Image</label>
                                                 <div class="col-sm-10">
-                                                    <input type="file" id="blog_image" name="blog_image" value="">
+                                                    <input type="file" id="image" name="image" value="">
                                                 </div>
+                                                <img id="preview-image-before-upload" src="https://www.riobeauty.co.uk/images/product_image_not_found.gif" alt="preview image" style="max-height: 250px;">
                                             </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-primary" id="btn-save" value="add">Save changes
-                                        </button>
-                                        <input type="hidden" id="blog_id" name="blog_id" value="0">
-                                        <input type="hidden" id="user_id" name="user_id" value="{{auth()->user()->id}}">
-                                    </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary" id="btn-save" value="add">Save changes
+                                            </button>
+                                            <input type="hidden" id="blog_id" name="blog_id" value="0">
+                                            <input type="hidden" id="user_id" name="user_id" value="{{auth()->user()->id}}">
+                                        </div>]
+                                    </form>
                                 </div>
                             </div>
                         </div>

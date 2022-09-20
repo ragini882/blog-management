@@ -166,7 +166,12 @@ class AuthController extends Controller
     {
 
         $user = auth()->user();
-        $link = Blog::create($request->all());
+        $data = $request->all();
+        $path = $request->file('image');
+        $image_name = time() . '.' . $path->getClientOriginalExtension();
+        $path->move(public_path('images'), $image_name);
+        $data['image'] = asset('images/' . $image_name);
+        $link = Blog::create($data);
         $link['can_edit'] = $user->can('blog-edit');
         $link['can_delete'] = $user->can('blog-delete');
         return response()->json($link);

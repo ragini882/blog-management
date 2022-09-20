@@ -7,17 +7,17 @@ jQuery(document).ready(function ($) {
     });
 
     ////----- Open the modal to UPDATE a link -----////
-    jQuery('body').on('click', '.open-modal', function () {
+    $(document).on('click', '.open-modal', function () {
 
         var blog_id = $(this).val();
         $.get('blog/' + blog_id, function (data) {
             $('#blog_id').val(data.id);
             $('#user_id').val(data.user_id);
-            jQuery('#blog_name').val(data.blog_name);
-            jQuery('#description').val(data.description);
-            jQuery('#blog_date').val(data.blog_date);
-            jQuery('#btn-save').val("update");
-            jQuery('#linkEditorModal').modal('show');
+            $('#blog_name').val(data.blog_name);
+            $('#description').val(data.description);
+            $('#blog_date').val(data.blog_date);
+            $('#btn-save').val("update");
+            $('#linkEditorModal').modal('show');
         })
     });
 
@@ -37,22 +37,30 @@ jQuery(document).ready(function ($) {
             $('#table_data').html(data);
         })
     });
+    $('#image').change(function () {
+        let reader = new FileReader();
+        reader.onload = (e) => {
+            $('#preview-image-before-upload').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(this.files[0]);
+    });
 
     // Clicking the save button on the open modal for both CREATE and UPDATE
-    $("#btn-save").click(function (e) {
+    $(document).on('submit', "#modalFormData", function (e) {
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
         e.preventDefault();
-        var formData = {
-            blog_name: jQuery('#blog_name').val(),
-            description: jQuery('#description').val(),
-            blog_date: $('#blog_date').val(),
-            blog_image: $('#blog_image').attr('files'),
-            user_id: $('#user_id').val(),
-        };
+        var formData = new FormData(this);
+        // var formData = {
+        //     blog_name: jQuery('#blog_name').val(),
+        //     description: jQuery('#description').val(),
+        //     blog_date: $('#blog_date').val(),
+        //     blog_image: $('#blog_image').attr('files'),
+        //     user_id: $('#user_id').val(),
+        // };
         var state = jQuery('#btn-save').val();
         var type = "POST";
         var blog_id = jQuery('#blog_id').val();
@@ -66,8 +74,11 @@ jQuery(document).ready(function ($) {
             url: ajaxurl,
             data: formData,
             dataType: 'json',
+            cache: false,
+            contentType: false,
+            processData: false,
             success: function (data) {
-                var link = '<tr id="blog' + data.id + '"><td>' + data.id + '</td><td>' + data.blog_name + '</td><td>' + data.description + '</td><td>' + data.blog_date + '</td>';
+                var link = '<tr id="blog' + data.id + '"><td>' + data.id + '</td><td>' + data.blog_name + '</td><td>' + data.description + '</td><td>' + data.blog_date + '</td><td><img src="' + data.image + '" /></td>';
                 link += '<td>';
                 if (data.can_edit) {
                     link += '<button class="btn btn-info open-modal" value="' + data.id + '">Edit</button>';
@@ -91,7 +102,7 @@ jQuery(document).ready(function ($) {
     });
 
     ////----- DELETE a link and remove from the page -----////
-    jQuery('.delete-blog').click(function () {
+    $(document).on('click', '.delete-blog', function () {
         var blog_id = $(this).val();
         alert(blog_id);
         $.ajaxSetup({
