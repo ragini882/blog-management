@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BlogController;
 
 
 /*
@@ -15,9 +16,9 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('post-login', [AuthController::class, 'postLogin'])->name('login.post');
@@ -28,9 +29,11 @@ Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::delete('/blog/{id?}', [AuthController::class, 'blogDelete']);
 Route::get('/blog/{id?}', [AuthController::class, 'blogEdit']);
-Route::put('/blog/{id?}', [AuthController::class, 'blogUpdate']);
+Route::post('/blog/{id?}', [AuthController::class, 'blogUpdate']);
 Route::post('/blog', [AuthController::class, 'blogcreate']);
 Route::resource('roles', RoleController::class);
+
+Route::get('/', [BlogController::class, 'index']);
 
 
 //--CREATE a link--//

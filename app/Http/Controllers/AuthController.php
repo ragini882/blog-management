@@ -92,16 +92,16 @@ class AuthController extends Controller
             $user = auth()->user();
             if ($request->ajax()) {
                 if ($user->hasRole('Admin')) {
-                    $blogs = Blog::where('blog_name', 'like', '%' . $request->search . '%')->orWhere('description', 'like', '%' . $request->search . '%')->paginate(5);
+                    $blogs = Blog::where('blog_name', 'like', '%' . $request->search . '%')->orWhere('description', 'like', '%' . $request->search . '%')->paginate(2);
                 } else {
-                    $blogs = Blog::where('user_id', $user->id)->paginate(5);
+                    $blogs = Blog::where('user_id', $user->id)->paginate(2);
                 }
                 return view('blog_table', compact('blogs'))->render();
             } else {
                 if ($user->hasRole('Admin')) {
-                    $blogs = Blog::paginate(5);
+                    $blogs = Blog::paginate(2);
                 } else {
-                    $blogs = Blog::where('user_id', $user->id)->paginate(5);
+                    $blogs = Blog::where('user_id', $user->id)->paginate(2);
                 }
                 return view('dashboard', ['blogs' => $blogs]);
             }
@@ -152,10 +152,18 @@ class AuthController extends Controller
     public function blogUpdate(Request $request, $id)
     {
         $user = auth()->user();
+        $path = $request->file('image');
+
         $link = Blog::find($id);
         $link->blog_name = $request->blog_name;
         $link->description = $request->description;
         $link->blog_date = $request->blog_date;
+        if ($path) {
+            $image_name = time() . '.' . $path->getClientOriginalExtension();
+            $path->move(public_path('images'), $image_name);
+            $link->image = asset('images/' . $image_name);
+        }
+
         $link->save();
         $link['can_edit'] = $user->can('blog-edit');
         $link['can_delete'] = $user->can('blog-delete');

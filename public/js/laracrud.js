@@ -3,6 +3,7 @@ jQuery(document).ready(function ($) {
     jQuery('#btn-add').click(function () {
         jQuery('#btn-save').val("add");
         jQuery('#modalFormData').trigger("reset");
+        $(this).closest('form').find("input[type=text], textarea").val("");
         jQuery('#linkEditorModal').modal('show');
     });
 
@@ -66,7 +67,7 @@ jQuery(document).ready(function ($) {
         var blog_id = jQuery('#blog_id').val();
         var ajaxurl = 'blog';
         if (state == "update") {
-            type = "PUT";
+            type = "POST";
             ajaxurl = 'blog/' + blog_id;
         }
         $.ajax({
