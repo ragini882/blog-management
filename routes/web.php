@@ -27,9 +27,9 @@ Route::post('post-registration', [AuthController::class, 'postRegistration'])->n
 Route::get('dashboard', [AuthController::class, 'dashboard']);
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::delete('/blog/{id?}', [AuthController::class, 'blogDelete']);
-Route::get('/blog/{id?}', [AuthController::class, 'blogEdit']);
-Route::post('/blog/{id?}', [AuthController::class, 'blogUpdate']);
+Route::delete('/blog/{id}', [AuthController::class, 'blogDelete']);
+Route::get('/blog/{id}', [AuthController::class, 'blogEdit']);
+Route::post('/blog/{id}', [AuthController::class, 'blogUpdate']);
 Route::post('/blog', [AuthController::class, 'blogcreate']);
 Route::resource('roles', RoleController::class);
 

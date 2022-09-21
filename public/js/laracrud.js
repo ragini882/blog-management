@@ -1,3 +1,35 @@
+
+
+$(document).ready(function () {
+    $("#modalFormData").validate({
+        ignore: [],
+        debug: false,
+        rules: {
+            blog_name: {
+                required: true
+            },
+            description: {
+                required: true
+            }
+        },
+        messages: {
+            blog_name: {
+                required: 'Blog name is required'
+            },
+            description: {
+                required: 'Description is required'
+            }
+        },
+        errorPlacement: function (error, element) {
+            if (element.attr('id') == 'description') {
+                error.insertAfter('#cke_description');
+            } else {
+                error.insertAfter(element);
+            }
+        }
+    });
+});
+
 jQuery(document).ready(function ($) {
     ////----- Open the modal to CREATE a link -----////
     jQuery('#btn-add').click(function () {

@@ -52,7 +52,7 @@
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label">Description</label>
                                                 <div class="col-sm-10">
-                                                    <textarea class="form-control" id="description" name="description" placeholder="Enter Link Description" value=""></textarea>
+                                                    <textarea class="ckeditor form-control" name="description" id="description"></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group">
