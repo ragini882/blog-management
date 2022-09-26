@@ -37,6 +37,10 @@
                                         <label>
                                             <input type="checkbox" name="remember"> Remember Me
                                         </label>
+                                        <br>
+                                        <label>
+                                            <a href="{{ route('ticket') }}">Create Ticket</a>
+                                        </label>
                                     </div>
                                 </div>
                             </div>

@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\TicketController;
+
 
 
 /*
@@ -36,29 +39,16 @@ Route::resource('roles', RoleController::class);
 Route::get('/', [BlogController::class, 'index']);
 
 
-//--CREATE a link--//
-// Route::post('/links', function (Request $request) {
-//     $link = Link::create($request->all());
-//     return Response::json($link);
-// });
+Route::post('/commentstore', [CommentController::class, 'commentstore'])->name('commentstore');
+Route::get('/commentsshow/{id}', [CommentController::class, 'commentsshow']);
+Route::post('comment/approve', [CommentController::class, 'commentapprove']);
 
-//--GET LINK TO EDIT--//
-// Route::get('/links/{link_id?}', function ($link_id) {
-//     $link = Link::find($link_id);
-//     return Response::json($link);
-// });
 
-//--UPDATE a link--//
-// Route::put('/links/{link_id?}', function (Request $request, $link_id) {
-//     $link = Link::find($link_id);
-//     $link->url = $request->url;
-//     $link->description = $request->description;
-//     $link->save();
-//     return Response::json($link);
-// });
+Route::get('ticket', [TicketController::class, 'index'])->name('ticket');
+Route::get('ticket/list', [TicketController::class, 'ticketList']);
+Route::post('ticket/add', [TicketController::class, 'ticketAdd']);
+Route::get('ticket/{id}', [TicketController::class, 'ticketEdit']);
+Route::post('ticket/{id}', [TicketController::class, 'ticketUpdate']);
 
-//--DELETE a link--//
-// Route::delete('/links/{link_id?}', function ($link_id) {
-//     $link = Link::destroy($link_id);
-//     return Response::json($link);
-// });
+Route::get('message/list/{ticket_id}', [TicketController::class, 'messageList']);
+Route::post('message/add', [TicketController::class, 'messageAdd']);
