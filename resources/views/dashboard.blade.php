@@ -64,9 +64,10 @@
                                             <div class="form-group">
                                                 <label class="col-sm-2 control-label">Image</label>
                                                 <div class="col-sm-10">
-                                                    <input type="file" id="image" name="image" value="">
+                                                    <input type="file" id="image" name="image" value="" oninput="output.src=window.URL.createObjectURL(this.files[0])">
                                                 </div>
-                                                <img id="preview-image-before-upload" src="https://www.riobeauty.co.uk/images/product_image_not_found.gif" alt="preview image" style="max-height: 250px;">
+                                                <img id="output" />
+                                                <!-- <img id="preview-image-before-upload" src="https://www.riobeauty.co.uk/images/product_image_not_found.gif" alt="preview image" style="max-height: 250px;"> -->
                                             </div>
 
                                         </div>

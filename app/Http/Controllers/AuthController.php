@@ -172,7 +172,6 @@ class AuthController extends Controller
 
     public function blogcreate(Request $request)
     {
-
         $user = auth()->user();
         $data = $request->all();
         $path = $request->file('image');

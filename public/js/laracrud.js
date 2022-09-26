@@ -48,7 +48,9 @@ jQuery(document).ready(function ($) {
             $('#user_id').val(data.user_id);
             $('#blog_name').val(data.blog_name);
             $('#description').val(data.description);
+            CKEDITOR.instances['description'].setData(data.description);
             $('#blog_date').val(data.blog_date);
+            $('#output').attr('src', data.image);
             $('#btn-save').val("update");
             $('#linkEditorModal').modal('show');
         })
@@ -68,7 +70,7 @@ jQuery(document).ready(function ($) {
         var search = $(this).val();
         $.get("/dashboard?search=" + search, function (data) {
             $('#table_data').html(data);
-        })
+        });
     });
     $('#image').change(function () {
         let reader = new FileReader();
