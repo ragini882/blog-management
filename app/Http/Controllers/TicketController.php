@@ -36,6 +36,7 @@ class TicketController extends Controller
                 'email' => $data['email'],
                 'password' => Hash::make(123456)
             ]);
+            $user->assignRole('User');
             $user_id = $user->id;
         }
         unset($data['ticket_id']);
@@ -63,10 +64,31 @@ class TicketController extends Controller
         return response()->json($ticket);
     }
 
-    public function messageList($ticket_id)
+    public function messageList(Request $request, $ticket_id)
     {
+        $user_id = '';
+        if (Auth::check()) {
+            $user_id = auth()->user()->id;
+        } elseif ($request->cookie('ticket_user_id')) {
+            $user_id = $request->cookie('ticket_user_id');
+        }
+        $data_array = [];
         $data = Message::where('ticket_id', $ticket_id)->get();
-        return view('ticket.message_list', ['messages' => $data]);
+        foreach ($data as $key => $msg) {
+            $msg_array['message'] = $msg->message;
+            $msg_array['created_at'] = $msg->created_at;
+            if ($user_id == $msg->user_id) {
+                $msg_array['user_name'] = 'you';
+                $msg_array['msg_type'] = 0;
+            } else {
+                $msg_array['user_name'] = $msg->user->name;
+                $msg_array['msg_type'] = 1;
+            }
+            //$data_array[$key] = (object)$msg_array;
+            array_push($data_array, (object)$msg_array);
+        }
+
+        return view('ticket.message_list', ['messages' => $data_array]);
     }
 
     public function messageAdd(Request $request)
