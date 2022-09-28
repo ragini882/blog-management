@@ -26,7 +26,11 @@ class RolePermissionSeeder extends Seeder
             'blog-list',
             'blog-create',
             'blog-edit',
-            'blog-delete'
+            'blog-delete',
+            'ticket-list',
+            'ticket-create',
+            'ticket-edit',
+            'ticket-delete'
         ];
 
         foreach ($permissions as $permission) {
@@ -35,12 +39,25 @@ class RolePermissionSeeder extends Seeder
 
         $role = Role::where('name', 'Admin')->first();
 
-        $role->syncPermissions($permissions);
+        $admin_permissions = [
+            'blog-list',
+            'blog-create',
+            'blog-edit',
+            'blog-delete',
+            'ticket-list',
+            'ticket-create',
+            'ticket-edit'
+        ];
+        $role->syncPermissions($admin_permissions);
 
         $user_permissions = [
             'blog-list',
             'blog-create',
-            'blog-edit'
+            'blog-edit',
+            'ticket-list',
+            'ticket-create',
+            'ticket-edit',
+            'ticket-delete'
         ];
 
         $role = Role::where('name', 'User')->first();
